@@ -11,8 +11,7 @@ import sklearn.cluster
 import distance
 import re
 
-#implement an api where burak can send request and compare between string he sent and my array of levensthain distance
-
+#to be implemented!!!
 app = Flask(__name__)
 examplarInj = ["/core/files/js/upload.js/?id=0%20or%201=1", "/xmlrpc.php/?id=0%20or%201=1", "/api/v1/login/?id=0%20or%201=1", "/api/v1/login/?id=0%20or%201=1", "/?customerId=1OR%201=1" ]
 
@@ -51,20 +50,17 @@ def levenshtein_ratio_and_distance(s, t, ratio_calc = False):
     cols = len(t)+1
     distance = np.zeros((rows,cols),dtype = int)
 
-    # Populate matrix of zeros with the indeces of each character of both strings
     for i in range(1, rows):
         for k in range(1,cols):
             distance[i][0] = i
             distance[0][k] = k
 
-    # Iterate over the matrix to compute the cost of deletions,insertions and/or substitutions
     for col in range(1, cols):
         for row in range(1, rows):
             if s[row-1] == t[col-1]:
-                cost = 0 # If the characters are the same in the two strings in a given position [i,j] then the cost is 0
+                cost = 0 
             else:
-                # In order to align the results with those of the Python Levenshtein package, if we choose to calculate the ratio
-                # the cost of a substitution is 2. If we calculate just distance, then the cost of a substitution is 1.
+          
                 if ratio_calc == True:
                     cost = 2
                 else:
@@ -77,7 +73,7 @@ def levenshtein_ratio_and_distance(s, t, ratio_calc = False):
         Ratio = ((len(s)+len(t)) - distance[row][col]) / (len(s)+len(t))
         return Ratio
     else:
-        # print(distance) #
+        # print(distance) 
 
         return "{} away".format(distance[row][col])
 
